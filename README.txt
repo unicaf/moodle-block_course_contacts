@@ -16,6 +16,7 @@ The block also shows whether the user has been active in the last five minutes.
 Changelog
 **********
 v3.0 - Minor updates to make the block work on Moodle3: minimal changes not reworked.
+     - Code Checker edits
 v2.0 - Fixed compatibility with MS-SQL.
      - The current user will no longer be filtered out of contacts list
        although the contact links will not be displayed for them.
