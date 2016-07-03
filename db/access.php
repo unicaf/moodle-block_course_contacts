@@ -15,10 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Course summary block caps.
+ * Block Course_Contacts role capabilities file.
  *
- * @package    block_course_summary
- * @copyright  Mark Nelson <markn@moodle.com>
+ * @package    block_course_contacts
+ * @author     Mark Ward
+ *             2016 Richard Oelmann
+ * @copyright  Mark Ward
+ * @credits    2016 R. Oelmann
+ *
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
