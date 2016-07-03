@@ -62,4 +62,3 @@ $string['sortby'] = 'Sort Users By';
 $string['subject'] = 'Subject';
 $string['to'] = 'To';
 $string['touid'] = 'Recipient ID';
-?>

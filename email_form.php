@@ -36,15 +36,16 @@ class simple_email_form extends moodleform {
         $mailto = $this->_customdata['mailto'];
         $touid = $this->_customdata['touid'];
 
-        $context= get_context_instance(CONTEXT_COURSE, $COURSE->id);
+        $context = get_context_instance(CONTEXT_COURSE, $COURSE->id);
 
         $mform->addElement('header', 'simpleemail_topsection',
         get_string('sendanemail', 'block_course_contacts'));
 
-
         $mform->addElement('hidden', 'mailto', $mailto);
         $mform->addElement('hidden', 'cid', $COURSE->id);
-        $mform->addElement('static', 'emailinfo', '', str_replace('{recipient}', strtolower($mailto), get_string('emailinfo', 'block_course_contacts')));
+        $mform->addElement('static', 'emailinfo', '',
+            str_replace('{recipient}', strtolower($mailto),
+            get_string('emailinfo', 'block_course_contacts')));
         $mform->addElement('html', '<br />');
         $mform->addElement('static', 'from', get_string('from', 'block_course_contacts'), strtolower($USER->email));
         $mform->addElement('static', 'to', get_string('to', 'block_course_contacts'), strtolower($mailto));
@@ -68,15 +69,15 @@ class simple_email_form extends moodleform {
         $mform->addGroup($buttons, 'buttons', '', array(' '), false);
     }
 
-    function validation($data, $files) {
+    public function validation($data, $files) {
         global $CFG, $DB;
         $errors = parent::validation($data, $files);
         if (!empty($CFG->recaptchapublickey) && !empty($CFG->recaptchaprivatekey) && $CFG->block_co_co_recaptcha) {
-            $recaptcha_element = $this->_form->getElement('recaptcha_element');
+            $recaptchaelement = $this->_form->getElement('recaptcha_element');
             if (!empty($this->_form->_submitValues['recaptcha_challenge_field'])) {
-                $challenge_field = $this->_form->_submitValues['recaptcha_challenge_field'];
-                $response_field = $this->_form->_submitValues['recaptcha_response_field'];
-                if (true !== ($result = $recaptcha_element->verify($challenge_field, $response_field))) {
+                $challengefield = $this->_form->_submitValues['recaptcha_challenge_field'];
+                $responsefield = $this->_form->_submitValues['recaptcha_response_field'];
+                if (true !== ($result = $recaptchaelement->verify($challengefield, $responsefield))) {
                     $errors['recaptcha'] = $result;
                 }
             } else {

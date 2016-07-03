@@ -33,7 +33,7 @@ function quickmail_format_time($time) {
 function quickmail_cleanup($table, $itemid) {
     global $DB;
 
-    // Clean up the files associated with this email
+    // Clean up the files associated with this email.
     if ($courseid = $DB->get_field($table, 'courseid', array('id' => $itemid))) {
         $fs = get_file_storage();
         $context = get_context_instance(CONTEXT_COURSE, $courseid);
@@ -56,33 +56,35 @@ function quickmail_draft_cleanup($itemid) {
 function quickmail_process_attachments($context, $email, $table, $id) {
     global $CFG, $USER;
 
-    $base_path = "temp/block_quickmail/{$USER->id}";
-    $moodle_base = "$CFG->dataroot/$base_path";
-    if(!file_exists($moodle_base)) {
-        make_upload_directory($base_path);
+    $basepath = "temp/block_quickmail/{$USER->id}";
+    $moodlebase = "$CFG->dataroot/$basepath";
+    if (!file_exists($moodlebase)) {
+        make_upload_directory($basepath);
     }
 
-    $zipname = $zip = $actual_zip = '';
-    if(!empty($email->attachment)) {
+    $zipname = $zip = $actualzip = '';
+    if (!empty($email->attachment)) {
         $zipname = "attachment.zip";
-        $zip = "$base_path/$zipname";
-        $actual_zip = "$moodle_base/$zipname";
+        $zip = "$basepath/$zipname";
+        $actualzip = "$moodlebase/$zipname";
 
         $packer = get_file_packer();
         $fs = get_file_storage();
         $files = $fs->get_area_files($context->id, 'block_quickmail_'.$table, 'attachment', $id, 'id');
-        $stored_files = array();
-        foreach($files as $file) {
-            if($file->is_directory() and $file->get_filename() == '.')
-                continue;
-
-            $stored_files[$file->get_filepath().$file->get_filename()] = $file;
+        $storedfiles = array();
+        foreach ($files as $file) {
+            if ($file->is_directory() ) {
+                if ($file->get_filename() == '.') {
+                    continue;
+                }
+            }
+            $storedfiles[$file->get_filepath().$file->get_filename()] = $file;
         }
 
-        $packer->archive_to_pathname($stored_files, $actual_zip);
+        $packer->archive_to_pathname($storedfiles, $actualzip);
     }
 
-    return array($zipname, $zip, $actual_zip);
+    return array($zipname, $zip, $actualzip);
 }
 
 function quickmail_attachment_names($draft) {
@@ -92,15 +94,19 @@ function quickmail_attachment_names($draft) {
 
     $fs = get_file_storage();
     $files = $fs->get_area_files($usercontext->id, 'user', 'draft', $draft, 'id');
-    $only_files = array_filter($files, function($file) {
+    $onlyfiles = array_filter($files, function($file) {
         return !$file->is_directory() and $file->get_filename() != '.';
     });
 
-    return implode(',', array_map(function($file) { return $file->get_filename(); }, $only_files));
+    return implode(',', array_map(
+        function($file) {
+            return $file->get_filename();
+        },
+        $onlyfiles));
 }
 
-function quickmail_filter_roles($user_roles, $master_roles) {
-    return array_uintersect($master_roles, $user_roles, function($a, $b) {
+function quickmail_filter_roles($userroles, $masterroles) {
+    return array_uintersect($masterroles, $userroles, function($a, $b) {
         return strcmp($a->shortname, $b->shortname);
     });
 }

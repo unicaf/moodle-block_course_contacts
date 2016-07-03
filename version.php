@@ -26,9 +26,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-    $plugin->version = 2013020602;  // YYYYMMDDHH (year, month, day, 24-hr time)
-    $plugin->requires = 2010112400; // YYYYMMDDHH (This is the release version for Moodle 2.0)
-    $plugin->release = '3.0'; //plugin release
+    $plugin->version = 2013020602;  // YYYYMMDDHH (year, month, day, 24-hr time).
+    $plugin->requires = 2010112400; // YYYYMMDDHH (This is the release version for Moodle 2.0).
+    $plugin->release = '3.0'; // Plugin release.
     $plugin->maturity   = MATURITY_STABLE;
-    $plugin->component = 'block_course_contacts'; // Full name of the plugin (used for diagnostics)
-?>
+    $plugin->component = 'block_course_contacts'; // Full name of the plugin (used for diagnostics).
