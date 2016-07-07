@@ -31,6 +31,10 @@ class block_course_contacts extends block_base {
         global $USER;
         $this->title = get_string('course_contacts', 'block_course_contacts');
     }
+    function applicable_formats() {
+        return array('all' => true, 'mod' => false, 'tag' => false, 'my' => false);
+    }
+
 
     // A custom function for shortening names.
     public function shorten_name($lname) {
