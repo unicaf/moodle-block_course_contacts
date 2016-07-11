@@ -31,7 +31,7 @@ class block_course_contacts extends block_base {
         global $USER;
         $this->title = get_string('course_contacts', 'block_course_contacts');
     }
-    function applicable_formats() {
+    public function applicable_formats() {
         return array('all' => true, 'mod' => false, 'tag' => false, 'my' => false);
     }
 
