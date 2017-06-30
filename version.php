@@ -26,7 +26,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-    $plugin->version = 20170070100;  // YYYYMMDDHH (year, month, day, 24-hr time).
+    $plugin->version = 2017070100;  // YYYYMMDDHH (year, month, day, 24-hr time).
     $plugin->requires = 2015111604; // YYYYMMDDHH (This is the release version for Moodle 2.0).
     $plugin->release = '3.1'; // Plugin release.
     $plugin->maturity   = MATURITY_STABLE;
