@@ -194,9 +194,9 @@ class block_course_contacts extends block_base {
                     // Because the role search finds the custom name and the proper name in brackets.
                     if (!empty($contacts)) {
                         if ($shortened = strstr($role, '(', true)) {
-                            $content .= html_writer::tag('h3', trim($shortened));
+                            $content .= html_writer::tag('h5', trim($shortened));
                         } else {
-                            $content .= html_writer::tag('h3', $role);
+                            $content .= html_writer::tag('h5', $role);
                         }
                     }
                     // Now display each contact.
