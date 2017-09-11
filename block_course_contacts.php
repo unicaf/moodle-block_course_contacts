@@ -224,7 +224,7 @@ class block_course_contacts extends block_base {
 
                         $content .= html_writer::end_tag('div');
                         $content .= html_writer::empty_tag('img', array(
-                            'src' => $OUTPUT->pix_url($status, 'block_course_contacts'),
+                            'src' => $OUTPUT->image_url($status, 'block_course_contacts'),
                             'title' => get_string($status, 'block_course_contacts'),
                             'alt' => get_string($status, 'block_course_contacts'),
                             'class' => 'status'));
@@ -243,7 +243,7 @@ class block_course_contacts extends block_base {
                                     $url = 'mailto:'.strtolower($contact->email);
                                 // }
                                 $content .= html_writer::link($url, html_writer::empty_tag('img', array(
-                                    'src' => $OUTPUT->pix_url('mail', 'block_course_contacts'),
+                                    'src' => $OUTPUT->image_url('mail', 'block_course_contacts'),
                                     'title' => get_string('email', 'block_course_contacts').' '.$contact->firstname,
                                     'alt' => get_string('email', 'block_course_contacts').' '.$contact->firstname)),
                                     array('target' => '_blank'));
@@ -252,7 +252,7 @@ class block_course_contacts extends block_base {
                             if ($this->config->message == 1) {
                                 $url = new moodle_url('/message/index.php', array('id' => $contact->id));
                                 $content .= html_writer::link($url, html_writer::empty_tag('img', array(
-                                    'src' => $OUTPUT->pix_url('message', 'block_course_contacts'),
+                                    'src' => $OUTPUT->image_url('message', 'block_course_contacts'),
                                     'title' => get_string('message', 'block_course_contacts').' '.$contact->firstname,
                                     'alt' => get_string('message', 'block_course_contacts').' '.$contact->firstname)),
                                     array('target' => '_blank'));
@@ -261,7 +261,7 @@ class block_course_contacts extends block_base {
                             if ($this->config->phone == 1 && $contact->phone1 != "") {
                                 $url = 'tel:'.$contact->phone1;
                                 $content .= html_writer::link($url, html_writer::empty_tag('img', array(
-                                    'src' => $OUTPUT->pix_url('phone', 'block_course_contacts'),
+                                    'src' => $OUTPUT->image_url('phone', 'block_course_contacts'),
                                     'title' => get_string('phone', 'block_course_contacts').' '.$contact->phone1,
                                     'alt' => get_string('phone', 'block_course_contacts').' '.$contact->phone1)),
                                     array());
