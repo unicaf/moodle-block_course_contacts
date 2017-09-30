@@ -15,6 +15,8 @@ The block also shows whether the user has been active in the last five minutes.
 
 Changelog
 **********
+v3.2 - Add missing capability language strings (thanks SK-Unikent)
+       Add profile description as a display option
 v3.1 - Option to use Alternate name for display instead of truncated full name (Thanks mkpelletier)
      - Font sizes of role name and text altered for consistency across other blocks
      - Bug fixed to add capability (Thanks savva312)
