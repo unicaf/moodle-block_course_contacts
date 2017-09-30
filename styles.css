@@ -71,6 +71,10 @@
     color: #444444;
     margin-top: 6px;
 }
+.block.block_course_contacts .content .ccard .info .description {
+    color: #444444;
+    margin-top: 6px;
+}
 
 .block.block_course_contacts .content .ccard .info .comms img {
     margin-right: 3px;
