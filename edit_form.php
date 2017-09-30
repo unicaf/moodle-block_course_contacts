@@ -45,6 +45,10 @@ class block_course_contacts_edit_form extends block_edit_form {
         $mform->setDefault('config_phone', 0);
         $mform->setType('config_phone', PARAM_INTEGER);
 
+        $mform->addElement('selectyesno', 'config_description', get_string('description', 'block_course_contacts'));
+        $mform->setDefault('config_description', 0);
+        $mform->setType('config_description', PARAM_INTEGER);
+
         // Second section gives options of how to display contacts.
         $mform->addElement('header', 'configheader', get_string('display', 'block_course_contacts'));
 

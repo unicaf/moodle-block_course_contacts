@@ -31,6 +31,7 @@ $string['course_contacts'] = 'Course Contacts';
 $string['captcha'] = 'Recaptcha Enabled';
 $string['captchadesc'] = 'If the Recaptcha has been configured for the site, should it be enabled when users are using the email form?';
 $string['dateenrolled'] = 'Date Enrolled';
+$string['description'] = 'Description<br>(Displays the first 200 characters of the user profile description)';
 $string['display'] = 'Display';
 $string['email'] = 'Email';
 $string['email_not_sent'] = 'The email was not sent.';

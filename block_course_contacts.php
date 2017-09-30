@@ -142,6 +142,7 @@ class block_course_contacts extends block_base {
             $this->config->email = 1;
             $this->config->message = 1;
             $this->config->phone = 0;
+            $this->config->description = 0;
         }
 
         $courseid = $this->page->course->id;
@@ -183,7 +184,7 @@ class block_course_contacts extends block_base {
             $inherit = $this->config->inherit;
         }
         $userfields = 'u.id,u.lastaccess,u.firstname,u.lastname,u.email,u.phone1,u.picture,u.imagealt,
-        u.firstnamephonetic,u.lastnamephonetic,u.middlename,u.alternatename';
+        u.firstnamephonetic,u.lastnamephonetic,u.middlename,u.alternatename,u.description';
         // Debugging($context->id);
         foreach ($roles as $key => $role) {
             $att = 'role_'.$key;
@@ -269,6 +270,11 @@ class block_course_contacts extends block_base {
                         }
 
                         $content .= html_writer::end_tag('div');
+                        if ($this->config->description == 1 && $contact->description != "") {
+                            $content .= html_writer::start_tag('div', array('class' => 'description'));
+                            $content .= substr(format_text($contact->description, FORMAT_HTML),0,199);
+                            $content .= html_writer::end_tag('div');
+                        }
                         $content .= html_writer::end_tag('div');
                         $content .= html_writer::end_tag('div');
                     }
