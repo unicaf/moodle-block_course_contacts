@@ -81,10 +81,9 @@ if ($form->is_cancelled()) {
     $email->message = $email->message['text'];
     $result = false;
     if ($data->mailto == $mailto->email && $data->cid == $courseid) {
-        $result = email_to_user($mailto, $USER, $email->subject, strip_tags($email->message), $email->message, NULL, NULL, NULL, $USER->email, NULL, NULL);
+        $result = email_to_user($mailto, $USER, $email->subject,
+            strip_tags($email->message), $email->message, null, null, null, $USER->email, null, null);
     } else {
-        // debugging($data->mailto.' == '.$mailto->email);
-        // debugging($data->cid.' == '.$courseid);
         $messages[] = get_string('invalid_request', 'block_course_contacts');
     }
 

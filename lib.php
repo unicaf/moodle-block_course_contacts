@@ -26,6 +26,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 function quickmail_format_time($time) {
     return date("l, d F Y, h:i A", $time);
 }

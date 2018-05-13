@@ -68,3 +68,4 @@ $string['sortby'] = 'Sort Users By';
 $string['subject'] = 'Subject';
 $string['to'] = 'To';
 $string['touid'] = 'Recipient ID';
+$string['privacy:metadata'] = 'The Course Contacts block does not store any individual user data.';

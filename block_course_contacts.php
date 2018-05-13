@@ -26,6 +26,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 class block_course_contacts extends block_base {
     public function init() {
         global $USER;
@@ -185,7 +187,7 @@ class block_course_contacts extends block_base {
         }
         $userfields = 'u.id,u.lastaccess,u.firstname,u.lastname,u.email,u.phone1,u.picture,u.imagealt,
         u.firstnamephonetic,u.lastnamephonetic,u.middlename,u.alternatename,u.description';
-        // Debugging($context->id);
+
         foreach ($roles as $key => $role) {
             $att = 'role_'.$key;
             if (!empty($this->config->$att)) {
@@ -207,19 +209,17 @@ class block_course_contacts extends block_base {
                         $content .= $OUTPUT->user_picture($contact, array('size' => 50));
                         $content .= html_writer::start_tag('div', array('class' => 'info'));
                         if ($contact->lastaccess > (time() - 300)) {
-                            // Online :)!
                             $status = 'online';
                         } else {
-                            // Offline :(!
                             $status = 'offline';
                         }
                         $content .= html_writer::start_tag('div', array('class' => 'name '.$status));
 
-                        // check block configuration for use_altname to determine the name to display.
-                        if ($this->config->use_altname == 1 && $contact->alternatename != '') {
+                        // Check block configuration for use_altname to determine the name to display.
+                        if (isset($this->config->use_altname) && $this->config->use_altname == 1 && $contact->alternatename != '') {
                                 $content .= $contact->alternatename;
                         } else {
-                            // use first and last names and truncate as necessary.
+                            // Use first and last names and truncate as necessary.
                                 $content .= $this->shorten_name($contact->firstname)." ".$this->shorten_name($contact->lastname);
                         }
 
@@ -236,13 +236,7 @@ class block_course_contacts extends block_base {
                         if ($USER->id != $contact->id) {
                             // Should we display email?
                             if ($this->config->email == 1) {
-                                // RO - removed, causing errors, retained for dev
-                                // if ($CFG->block_co_co_simpleemail) {
-                                    // $url = new moodle_url('/blocks/course_contacts/email.php', array(
-                                        // 'touid' => $contact->id, 'cid'=>$COURSE->id));
-                                // } else {
-                                    $url = 'mailto:'.strtolower($contact->email);
-                                // }
+                                $url = 'mailto:'.strtolower($contact->email);
                                 $content .= html_writer::link($url, html_writer::empty_tag('img', array(
                                     'src' => $OUTPUT->image_url('mail', 'block_course_contacts'),
                                     'title' => get_string('email', 'block_course_contacts').' '.$contact->firstname,
