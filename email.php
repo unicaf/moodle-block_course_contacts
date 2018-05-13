@@ -81,7 +81,7 @@ if ($form->is_cancelled()) {
     $email->message = $email->message['text'];
     $result = false;
     if ($data->mailto == $mailto->email && $data->cid == $courseid) {
-        $result = email_to_user($mailto, $USER, $email->subject, strip_tags($email->message), $email->message);
+        $result = email_to_user($mailto, $USER, $email->subject, strip_tags($email->message), $email->message, NULL, NULL, NULL, $USER->email, NULL, NULL);
     } else {
         // debugging($data->mailto.' == '.$mailto->email);
         // debugging($data->cid.' == '.$courseid);
