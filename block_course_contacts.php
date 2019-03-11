@@ -128,6 +128,7 @@ class block_course_contacts extends block_base {
                        $roleselect
                        $groupselect
                        $extrawheretest
+                AND u.deleted = 0 AND u.suspended = 0
               GROUP BY $fields, ra.roleid
               ORDER BY $sort"; // Join now so that we can just use fullname() later.
 
