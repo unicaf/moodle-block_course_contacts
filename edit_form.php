@@ -42,6 +42,7 @@ class block_course_contacts_edit_form extends block_edit_form {
 
     /**
      * Function used to define the settings form.
+     * @param array $mform
      */
     protected function specific_definition($mform) {
 
