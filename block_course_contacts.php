@@ -123,12 +123,15 @@ class block_course_contacts extends block_base {
                   FROM {role_assignments} ra
                   JOIN {user} u ON u.id = ra.userid
                   JOIN {role} r ON ra.roleid = r.id
+                  JOIN {context} c ON c.id = ra.contextid AND c.contextlevel = 50
+                  JOIN {enrol} e ON e.courseid = c.instanceid
+                  JOIN {user_enrolments} ue ON ue.userid = u.id
             $groupjoin
                  WHERE (ra.contextid = ? $parentcontexts)
                        $roleselect
                        $groupselect
                        $extrawheretest
-                AND u.deleted = 0 AND u.suspended = 0
+                AND u.deleted = 0 AND u.suspended = 0 AND ue.status = 0
               GROUP BY $fields, ra.roleid
               ORDER BY $sort"; // Join now so that we can just use fullname() later.
 
@@ -146,9 +149,20 @@ class block_course_contacts extends block_base {
             $this->config->message = 1;
             $this->config->phone = 0;
             $this->config->description = 0;
+            $this->config->hide_block_guest = 1;
+            $this->config->email_guest = 0;
+            $this->config->message_guest = 0;
+            $this->config->phone_guest = 0;
+            $this->config->description_guest = 0;
         }
 
         $courseid = $this->page->course->id;
+        $context = $this->page->context;
+        $isguest = is_guest($context);
+
+        if ($isguest && $this->config->hide_block_guest) {
+            return;
+        }
 
         if ($this->content !== null) {
             return $this->content;
@@ -156,7 +170,6 @@ class block_course_contacts extends block_base {
 
         $this->content = new stdClass;
 
-        $context = $this->page->context;
         $content = '';
         // Find the roles available on this course.
         $roles = array_reverse(get_default_enrol_roles($context, null), true);
@@ -189,13 +202,17 @@ class block_course_contacts extends block_base {
         $userfields = 'u.id,u.lastaccess,u.firstname,u.lastname,u.email,u.phone1,u.picture,u.imagealt,
         u.firstnamephonetic,u.lastnamephonetic,u.middlename,u.alternatename,u.description';
 
+        $currentgroup = groups_get_course_group($COURSE, true, false);
+        $content .= groups_print_course_menu($COURSE, new moodle_url('/course/view.php?id='.$courseid), true);
+
+        $clist = array();
         foreach ($roles as $key => $role) {
             $att = 'role_'.$key;
             if (!empty($this->config->$att)) {
                 if ($this->config->$att == 1) {
-                    $contacts = $this->get_role_users($key, $context, $inherit, $userfields, $orderby, null, '', '', 30);
 
-                    // Because the role search finds the custom name and the proper name in brackets.
+                    $contacts = $this->get_role_users($key, $context, $inherit, $userfields, $orderby, null, $currentgroup, '', 30);                    // Because the role search finds the custom name and the proper name in brackets.
+
                     if (!empty($contacts)) {
                         if ($shortened = strstr($role, '(', true)) {
                             $content .= html_writer::tag('h5', trim($shortened));
@@ -205,73 +222,83 @@ class block_course_contacts extends block_base {
                     }
                     // Now display each contact.
                     foreach ($contacts as $contact) {
+                        if (!in_array($contact->id, $clist)) {
+                            $clist[] = $contact->id;
+                            $content .= html_writer::start_tag('div', array('class' => 'ccard'));
+                            $content .= $OUTPUT->user_picture($contact, array('size' => 50));
+                            $content .= html_writer::start_tag('div', array('class' => 'info'));
+                            if ($contact->lastaccess > (time() - 300)) {
+                                $status = 'online';
+                            } else {
+                                $status = 'offline';
+                            }
+                            $content .= html_writer::start_tag('div', array('class' => 'name '.$status));
 
-                        $content .= html_writer::start_tag('div', array('class' => 'ccard'));
-                        $content .= $OUTPUT->user_picture($contact, array('size' => 50));
-                        $content .= html_writer::start_tag('div', array('class' => 'info'));
-                        if ($contact->lastaccess > (time() - 300)) {
-                            $status = 'online';
-                        } else {
-                            $status = 'offline';
-                        }
-                        $content .= html_writer::start_tag('div', array('class' => 'name '.$status));
-
-                        // Check block configuration for use_altname to determine the name to display.
-                        if (isset($this->config->use_altname) && $this->config->use_altname == 1 && $contact->alternatename != '') {
+                            // Check block configuration for use_altname to determine the name to display.
+                            if (isset($this->config->use_altname)
+                                && $this->config->use_altname == 1
+                                && $contact->alternatename != '') {
                                 $content .= $contact->alternatename;
-                        } else {
-                            // Use first and last names and truncate as necessary.
+                            } else {
+                                // Use first and last names and truncate as necessary.
                                 $content .= $this->shorten_name($contact->firstname)." ".$this->shorten_name($contact->lastname);
-                        }
-
-                        $content .= html_writer::end_tag('div');
-                        $content .= html_writer::empty_tag('img', array(
-                            'src' => $OUTPUT->image_url($status, 'block_course_contacts'),
-                            'title' => get_string($status, 'block_course_contacts'),
-                            'alt' => get_string($status, 'block_course_contacts'),
-                            'class' => 'status'));
-                        $content .= html_writer::empty_tag('hr');
-                        $content .= html_writer::start_tag('div', array('class' => 'comms'));
-
-                        // Unless they are us.
-                        if ($USER->id != $contact->id) {
-                            // Should we display email?
-                            if ($this->config->email == 1) {
-                                $url = 'mailto:'.strtolower($contact->email);
-                                $content .= html_writer::link($url, html_writer::empty_tag('img', array(
-                                    'src' => $OUTPUT->image_url('mail', 'block_course_contacts'),
-                                    'title' => get_string('email', 'block_course_contacts').' '.$contact->firstname,
-                                    'alt' => get_string('email', 'block_course_contacts').' '.$contact->firstname)),
-                                    array('target' => '_blank'));
                             }
-                            // What about messages?
-                            if ($this->config->message == 1) {
-                                $url = new moodle_url('/message/index.php', array('id' => $contact->id));
-                                $content .= html_writer::link($url, html_writer::empty_tag('img', array(
-                                    'src' => $OUTPUT->image_url('message', 'block_course_contacts'),
-                                    'title' => get_string('message', 'block_course_contacts').' '.$contact->firstname,
-                                    'alt' => get_string('message', 'block_course_contacts').' '.$contact->firstname)),
-                                    array('target' => '_blank'));
-                            }
-                            // And phone numbers?
-                            if ($this->config->phone == 1 && $contact->phone1 != "") {
-                                $url = 'tel:'.$contact->phone1;
-                                $content .= html_writer::link($url, html_writer::empty_tag('img', array(
-                                    'src' => $OUTPUT->image_url('phone', 'block_course_contacts'),
-                                    'title' => get_string('phone', 'block_course_contacts').' '.$contact->phone1,
-                                    'alt' => get_string('phone', 'block_course_contacts').' '.$contact->phone1)),
-                                    array());
-                            }
-                        }
 
-                        $content .= html_writer::end_tag('div');
-                        $content .= html_writer::end_tag('div');
-                        if ($this->config->description == 1 && $contact->description != "") {
-                            $content .= html_writer::start_tag('div', array('class' => 'description'));
-                            $content .= substr(format_text($contact->description, FORMAT_HTML), 0, 199);
+                            $content .= html_writer::end_tag('div');
+                            $content .= html_writer::empty_tag('img', array(
+                                'src' => $OUTPUT->image_url($status, 'block_course_contacts'),
+                                'title' => get_string($status, 'block_course_contacts'),
+                                'alt' => get_string($status, 'block_course_contacts'),
+                                'class' => 'status'));
+                            $content .= html_writer::empty_tag('hr');
+                            $content .= html_writer::start_tag('div', array('class' => 'comms'));
+
+                            // Unless they are us.
+                            if ($USER->id != $contact->id) {
+                                // Should we display email?
+                                if ((!$isguest && $this->config->email == 1)
+                                    || ($isguest && $this->config->email_guest == 1)) {
+                                    $url = 'mailto:'.strtolower($contact->email);
+                                    $content .= html_writer::link($url, html_writer::empty_tag('img', array(
+                                        'src' => $OUTPUT->image_url('mail', 'block_course_contacts'),
+                                        'title' => get_string('email', 'block_course_contacts').' '.$contact->firstname,
+                                        'alt' => get_string('email', 'block_course_contacts').' '.$contact->firstname)),
+                                        array('target' => '_blank'));
+                                }
+                                // What about messages?
+                                if ((!$isguest && $this->config->message == 1)
+                                    || ($isguest && $this->config->message_guest == 1)) {
+                                    $url = new moodle_url('/message/index.php', array('id' => $contact->id));
+                                    $content .= html_writer::link($url, html_writer::empty_tag('img', array(
+                                        'src' => $OUTPUT->image_url('message', 'block_course_contacts'),
+                                        'title' => get_string('message', 'block_course_contacts').' '.$contact->firstname,
+                                        'alt' => get_string('message', 'block_course_contacts').' '.$contact->firstname)),
+                                        array('target' => '_blank'));
+                                }
+                                // And phone numbers?
+                                if ($contact->phone1 != ""
+                                    && ((!$isguest && $this->config->phone == 1)
+                                    || ($isguest && $this->config->phone_guest == 1))) {
+                                    $url = 'tel:'.$contact->phone1;
+                                    $content .= html_writer::link($url, html_writer::empty_tag('img', array(
+                                        'src' => $OUTPUT->image_url('phone', 'block_course_contacts'),
+                                        'title' => get_string('phone', 'block_course_contacts').' '.$contact->phone1,
+                                        'alt' => get_string('phone', 'block_course_contacts').' '.$contact->phone1)),
+                                        array());
+                                }
+                            }
+
+                            $content .= html_writer::end_tag('div');
+                            $content .= html_writer::end_tag('div');
+                            if ($contact->description != ""
+                                && ((!$isguest && $this->config->description == 1)
+                                || ($isguest && $this->config->description_guest == 1))) {
+                                $content .= html_writer::start_tag('div', array('class' => 'description'));
+                                $content .= substr(format_text($contact->description, FORMAT_HTML), 0, 199);
+                                $content .= html_writer::end_tag('div');
+                            }
                             $content .= html_writer::end_tag('div');
                         }
-                        $content .= html_writer::end_tag('div');
                     }
                 }
             }

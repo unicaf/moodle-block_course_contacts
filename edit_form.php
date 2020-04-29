@@ -32,7 +32,7 @@ class block_course_contacts_edit_form extends block_edit_form {
 
     protected function specific_definition($mform) {
 
-        // First section configures which contact methods should be displayed.
+        // This section configures which contact methods should be displayed.
         $mform->addElement('header', 'configheader', get_string('method', 'block_course_contacts'));
 
         $mform->addElement('selectyesno', 'config_email', get_string('email', 'block_course_contacts'));
@@ -51,7 +51,30 @@ class block_course_contacts_edit_form extends block_edit_form {
         $mform->setDefault('config_description', 0);
         $mform->setType('config_description', PARAM_INTEGER);
 
-        // Second section gives options of how to display contacts.
+        // This section configures which contact methods should be displayed for guest users.
+        $mform->addElement('header', 'configheader', get_string('methodguest', 'block_course_contacts'));
+
+        $mform->addElement('selectyesno', 'config_hide_block_guest', get_string('hideblockforguest', 'block_course_contacts'));
+        $mform->setDefault('config_hide_block_guest', 1);
+        $mform->setType('config_hide_block_guest', PARAM_INT);
+
+        $mform->addElement('selectyesno', 'config_email_guest', get_string('email', 'block_course_contacts'));
+        $mform->setDefault('config_email_guest', 0);
+        $mform->setType('config_email_guest', PARAM_INT);
+
+        $mform->addElement('selectyesno', 'config_message_guest', get_string('message', 'block_course_contacts'));
+        $mform->setDefault('config_message_guest', 0);
+        $mform->setType('config_message_guest', PARAM_INT);
+
+        $mform->addElement('selectyesno', 'config_phone_guest', get_string('phone', 'block_course_contacts'));
+        $mform->setDefault('config_phone_guest', 0);
+        $mform->setType('config_phone_guest', PARAM_INT);
+
+        $mform->addElement('selectyesno', 'config_description_guest', get_string('description', 'block_course_contacts'));
+        $mform->setDefault('config_description_guest', 0);
+        $mform->setType('config_description_guest', PARAM_INT);
+
+        // This section gives options of how to display contacts.
         $mform->addElement('header', 'configheader', get_string('display', 'block_course_contacts'));
 
         $sortby = array(0 => get_string('alphabetical', 'block_course_contacts'),
@@ -71,7 +94,7 @@ class block_course_contacts_edit_form extends block_edit_form {
         $mform->addHelpButton('config_use_altname', 'how_altname_works', 'block_course_contacts');
         $mform->setAdvanced('config_use_altname');
 
-        // Third section builds a list of the roles available within this context for selection.
+        // This section builds a list of the roles available within this context for selection.
         $mform->addElement('header', 'configheader', get_string('roles', 'block_course_contacts'));
 
         $roles = array_reverse(get_default_enrol_roles($this->block->context, null), true);
