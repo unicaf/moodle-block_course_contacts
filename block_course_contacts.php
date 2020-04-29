@@ -37,27 +37,6 @@ class block_course_contacts extends block_base {
         return array('all' => true, 'mod' => false, 'tag' => false, 'my' => false);
     }
 
-
-    // A custom function for shortening names.
-    public function shorten_name($lname) {
-        if (strpos($lname, '-')) {
-            $names = explode('-', $lname);
-            $lname = '';
-            foreach ($names as $name) {
-                if (strlen($name) > 6) {
-                    $name = substr($name, 0, 1);
-                }
-                $lname .= $name."-";
-            }
-            $lname = substr($lname, 0, -1);
-        }
-        if (strpos($lname, ' ')) {
-            $names = explode(' ', $lname);
-            $lname = $names[0];
-        }
-        return $lname;
-    }
-
     /**
      * Gets all the users assigned this role in this context or higher
      *
@@ -241,7 +220,8 @@ class block_course_contacts extends block_base {
                                 $content .= $contact->alternatename;
                             } else {
                                 // Use first and last names and truncate as necessary.
-                                $content .= $this->shorten_name($contact->firstname)." ".$this->shorten_name($contact->lastname);
+                                // $content .= $this->shorten_name($contact->firstname)." ".$this->shorten_name($contact->lastname);
+                                $content .= $contact->firstname." ".$contact->lastname;
                             }
 
                             $content .= html_writer::end_tag('div');
