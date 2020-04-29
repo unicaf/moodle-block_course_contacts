@@ -61,7 +61,7 @@ class block_course_contacts extends block_base {
      *
      * @param int $roleid (can also be an array of ints!)
      * @param context $context
-     * @param $roleid ID number of role being displayed
+     * @param mixed $roleid ID number of role being displayed
      * @param bool $parent if true, get list of users assigned in higher context too
      * @param string $fields fields from user (u.) , role assignment (ra) or role (r.)
      * @param string $sort sort from user (u.) , role assignment (ra) or role (r.)
