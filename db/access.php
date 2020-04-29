@@ -19,9 +19,9 @@
  *
  * @package    block_course_contacts
  * @author     Mark Ward
- *             2016 Richard Oelmann
+ *             2020 Richard Oelmann
  * @copyright  Mark Ward
- * @credits    2016 R. Oelmann
+ *            2020 R. Oelmann
  *
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

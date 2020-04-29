@@ -19,20 +19,39 @@
  *
  * @package    block_course_contacts
  * @author     Mark Ward
- *             2016 Richard Oelmann
+ * @author     2020 Richard Oelmann
  * @copyright  Mark Ward
- * @credits    2016 R. Oelmann
+ * @copyright  2020 R. Oelmann
  *
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Block Course Contacts class definition.
+ *
+ * This block can be added to a course page or a activity page to display of list of
+ * the best/worst students/groups in a particular activity.
+ *
+ * @package    block_course_contacts
+ * @copyright  Mark Ward
+ * @copyright  2020 Richard Oelmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class block_course_contacts extends block_base {
+
+    /**
+     * Core function used to initialize the block.
+     */
     public function init() {
-        global $USER;
         $this->title = get_string('course_contacts', 'block_course_contacts');
     }
+
+    /**
+     * Core function, specifies where the block can be used.
+     * @return array
+     */
     public function applicable_formats() {
         return array('all' => true, 'mod' => false, 'tag' => false, 'my' => false);
     }
@@ -54,7 +73,7 @@ class block_course_contacts extends block_base {
      * @return array
      */
     private function get_role_users($roleid, $context, $parent = false, $fields = '',
-            $sort = 'u.lastname, u.firstname', $gethiddenignored = null, $group = '',
+            $sort = 'u.lastname, u.firstname', $group = '',
             $limitfrom = '', $limitnum = '', $extrawheretest = '', $whereparams = array()) {
         global $DB;
 
@@ -117,8 +136,12 @@ class block_course_contacts extends block_base {
         return $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
     }
 
+    /**
+     * Content function - creates the content to be displayed.
+     * @return $this->content
+     */
     public function get_content() {
-        global $CFG, $DB, $OUTPUT, $USER, $COURSE;
+        global $OUTPUT, $USER, $COURSE;
 
         // If the user hasnt configured the plugin, set these as defaults.
         if (empty($this->config)) {
@@ -190,7 +213,7 @@ class block_course_contacts extends block_base {
             if (!empty($this->config->$att)) {
                 if ($this->config->$att == 1) {
 
-                    $contacts = $this->get_role_users($key, $context, $inherit, $userfields, $orderby, null, $currentgroup, '', 30);                    // Because the role search finds the custom name and the proper name in brackets.
+                    $contacts = $this->get_role_users($key, $context, $inherit, $userfields, $orderby, $currentgroup, '', 30);                    // Because the role search finds the custom name and the proper name in brackets.
 
                     if (!empty($contacts)) {
                         if ($shortened = strstr($role, '(', true)) {
@@ -289,6 +312,11 @@ class block_course_contacts extends block_base {
         return $this->content;
     }
 
+    /**
+     * Allow the block to have a configuration page
+     *
+     * @return boolean
+     */
     public function instance_allow_config() {
         return true;
     }

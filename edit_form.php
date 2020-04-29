@@ -19,17 +19,30 @@
  *
  * @package    block_course_contacts
  * @author     Mark Ward
- *             2016 Richard Oelmann
+ *             2020 Richard Oelmann
  * @copyright  Mark Ward
- * @credits    2016 R. Oelmann
+ *             2020 R. Oelmann
  *
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Block settings form class definition.
+ *
+ * This block can be added to a course page or a activity page to display of list of
+ * the best/worst students/groups in a particular activity.
+ *
+ * @package    block_course_contacts
+ * @copyright  Mark Ward
+ * @copyright  2020 Richard Oelmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class block_course_contacts_edit_form extends block_edit_form {
 
+    /**
+     * Function used to define the settings form.
+     */
     protected function specific_definition($mform) {
 
         // This section configures which contact methods should be displayed.

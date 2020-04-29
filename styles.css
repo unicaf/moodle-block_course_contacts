@@ -26,11 +26,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-.block_course_contacts br{
+.block_course_contacts br {
     height: 2px;
-}
-
-.block.block_course_contacts {
 }
 
 .block.block_course_contacts .content .ccard {
@@ -41,7 +38,7 @@
 }
 
 .block.block_course_contacts .content .ccard .userpicture {
-    float:left;
+    float: left;
     width: 50px;
     height: 50px;
 }
@@ -67,11 +64,11 @@
 }
 
 .block.block_course_contacts .content .ccard .info .comms {
-    color: #444444;
+    color: #444;
     margin-top: 6px;
 }
 .block.block_course_contacts .content .ccard .info .description {
-    color: #444444;
+    color: #444;
     margin-top: 6px;
 }
 
@@ -80,10 +77,10 @@
 
 }
 
-div.cocoemailmsgs{
+div.cocoemailmsgs {
     text-align: center;
 }
 
-div.cocoemailmsgs *{
+div.cocoemailmsgs * {
     margin: 1em;
 }
