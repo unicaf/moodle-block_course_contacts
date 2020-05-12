@@ -160,6 +160,9 @@ class block_course_contacts extends block_base {
 
         $courseid = $this->page->course->id;
         $context = $this->page->context;
+        if($context->contextlevel != 50) {
+            return;
+        }
         $isguest = is_guest($context);
 
         if ($isguest && $this->config->hide_block_guest) {
@@ -173,6 +176,7 @@ class block_course_contacts extends block_base {
         $this->content = new stdClass;
 
         $content = '';
+
         // Find the roles available on this course.
         $roles = array_reverse(get_default_enrol_roles($context, null), true);
         $content .= html_writer::start_tag('div', array('class' => 'box'));
