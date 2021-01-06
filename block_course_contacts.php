@@ -301,7 +301,8 @@ class block_course_contacts extends block_base {
                                 && ((!$isguest && $this->config->description == 1)
                                 || ($isguest && $this->config->description_guest == 1))) {
                                 $content .= html_writer::start_tag('div', array('class' => 'description'));
-                                $content .= substr(format_text($contact->description, FORMAT_HTML), 0, 199);
+                                $usercontext = context_user::instance($contact->id);
+                                $content .= substr(format_text(file_rewrite_pluginfile_urls($contact->description, 'pluginfile.php', $usercontext->id, 'user' ,'profile', null ), FORMAT_HTML), 0, 199);
                                 $content .= html_writer::end_tag('div');
                             }
                             $content .= html_writer::end_tag('div');
