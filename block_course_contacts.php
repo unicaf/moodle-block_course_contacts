@@ -147,7 +147,7 @@ class block_course_contacts extends block_base {
         if (empty($this->config)) {
             $this->config = new stdclass();
             $this->config->role_3 = 1;
-            $this->config->email = 1;
+            $this->config->email = 0;
             $this->config->message = 1;
             $this->config->phone = 0;
             $this->config->description = 0;
