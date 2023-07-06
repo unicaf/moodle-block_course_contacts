@@ -50,7 +50,7 @@ class block_course_contacts_edit_form extends block_edit_form {
         $mform->addElement('header', 'configheader', get_string('method', 'block_course_contacts'));
 
         $mform->addElement('selectyesno', 'config_email', get_string('email', 'block_course_contacts'));
-        $mform->setDefault('config_email', 1);
+        $mform->setDefault('config_email', 0);
         $mform->setType('config_email', PARAM_INTEGER);
 
         $mform->addElement('selectyesno', 'config_message', get_string('message', 'block_course_contacts'));
