@@ -143,7 +143,7 @@ class block_course_contacts extends block_base {
     public function get_content() {
         global $OUTPUT, $USER, $COURSE;
 
-        // If the user hasnt configured the plugin, set these as defaults.
+        // If the user hasn't configured the plugin, set these as defaults.
         if (empty($this->config)) {
             $this->config = new stdclass();
             $this->config->$teacher_role = 1;
@@ -158,6 +158,8 @@ class block_course_contacts extends block_base {
             $this->config->phone_guest = 0;
             $this->config->description_guest = 0;
         }
+        //This sets email to off for current instances
+        $this->config->email = 0;
 
         $courseid = $this->page->course->id;
         $context = $this->page->context;
