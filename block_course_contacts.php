@@ -146,7 +146,8 @@ class block_course_contacts extends block_base {
         // If the user hasnt configured the plugin, set these as defaults.
         if (empty($this->config)) {
             $this->config = new stdclass();
-            $this->config->role_3 = 1;
+            $this->config->$teacher_role = 1;
+            $this->config->$student_role = 1;
             $this->config->email = 0;
             $this->config->message = 1;
             $this->config->phone = 0;
@@ -205,6 +206,7 @@ class block_course_contacts extends block_base {
         if (isset($this->config->inherit)) {
             $inherit = $this->config->inherit;
         }
+
         $userfields = 'u.id,u.lastaccess,u.firstname,u.lastname,u.email,u.phone1,u.picture,u.imagealt,
         u.firstnamephonetic,u.lastnamephonetic,u.middlename,u.alternatename,u.description';
 
@@ -213,17 +215,33 @@ class block_course_contacts extends block_base {
 
         $clist = array();
         foreach ($roles as $key => $role) {
+            //This sets views the Student
+            if($roles[$key] === "Student"){
+                $student_role = 'role_'.$key;
+                $this->config->$student_role = 1;
+            }
+            //This views the Teacher
+            if($roles[$key] === "Teacher"){
+                $teacher_role = 'role_'.$key;
+                $this->config->$teacher_role = 1;
+            }
+
             $att = 'role_'.$key;
             if (!empty($this->config->$att)) {
                 if ($this->config->$att == 1) {
+
 
                     $contacts = $this->get_role_users($key, $context, $inherit, $userfields, $orderby, $currentgroup, '', 30);                    // Because the role search finds the custom name and the proper name in brackets.
 
                     if (!empty($contacts)) {
                         if ($shortened = strstr($role, '(', true)) {
-                            $content .= html_writer::tag('h5', trim($shortened));
+                            $content .= html_writer::tag('h4', trim($shortened));
+
+
                         } else {
-                            $content .= html_writer::tag('h5', $role);
+                            $content .= html_writer::tag('h4', $role);
+
+
                         }
                     }
                     // Now display each contact.
@@ -311,6 +329,7 @@ class block_course_contacts extends block_base {
                 }
             }
         }
+
         $content .= html_writer::end_tag('div');
 
         $this->content->text = $content;
