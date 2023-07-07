@@ -146,8 +146,6 @@ class block_course_contacts extends block_base {
         // If the user hasn't configured the plugin, set these as defaults.
         if (empty($this->config)) {
             $this->config = new stdclass();
-            $this->config->$teacher_role = 1;
-            $this->config->$student_role = 1;
             $this->config->email = 0;
             $this->config->message = 1;
             $this->config->phone = 0;
@@ -219,13 +217,13 @@ class block_course_contacts extends block_base {
         foreach ($roles as $key => $role) {
             //This sets views the Student
             if($roles[$key] === "Student"){
-                $student_role = 'role_'.$key;
-                $this->config->$student_role = 1;
+                $student_role_id = 'role_'.$key;
+                $this->config->$student_role_id = 1;
             }
             //This views the Teacher
             if($roles[$key] === "Teacher"){
-                $teacher_role = 'role_'.$key;
-                $this->config->$teacher_role = 1;
+                $teacher_role_id = 'role_'.$key;
+                $this->config->$teacher_role_id = 1;
             }
 
             $att = 'role_'.$key;
