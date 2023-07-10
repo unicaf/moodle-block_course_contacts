@@ -146,6 +146,7 @@ class block_course_contacts extends block_base {
         // If the user hasn't configured the plugin, set these as defaults.
         if (empty($this->config)) {
             $this->config = new stdclass();
+            $this->config->role_3 = 1;
             $this->config->email = 0;
             $this->config->message = 1;
             $this->config->phone = 0;
@@ -156,8 +157,10 @@ class block_course_contacts extends block_base {
             $this->config->phone_guest = 0;
             $this->config->description_guest = 0;
         }
-        //This sets email to off for current instances
-        $this->config->email = 0;
+        //unsets the role_3 from the std class
+        unset($this->config->role_3);
+
+
 
         $courseid = $this->page->course->id;
         $context = $this->page->context;
