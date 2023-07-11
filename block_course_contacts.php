@@ -146,7 +146,7 @@ class block_course_contacts extends block_base {
         // If the user hasn't configured the plugin, set these as defaults.
         if (empty($this->config)) {
             $this->config = new stdclass();
-            $this->config->role_3 = 1;
+            $this->config->role_3 = 0;
             $this->config->email = 0;
             $this->config->message = 1;
             $this->config->phone = 0;
