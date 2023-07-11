@@ -28,7 +28,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-    $plugin->version = 2020050103;  // YYYYMMDDHH (year, month, day, 24-hr time).
+    $plugin->version = 2020050111;  // YYYYMMDDHH (year, month, day, 24-hr time).
     $plugin->requires = 2019052000; // YYYYMMDDHH (This is the release version for Moodle 2.0).
     $plugin->release = '3.9.0.1'; // Plugin release.
     $plugin->maturity   = MATURITY_STABLE;
