@@ -50,7 +50,7 @@ class block_course_contacts_edit_form extends block_edit_form {
         $mform->addElement('header', 'configheader', get_string('method', 'block_course_contacts'));
 
         $mform->addElement('selectyesno', 'config_email', get_string('email', 'block_course_contacts'));
-        $mform->setDefault('config_email', 1);
+        $mform->setDefault('config_email', 0);
         $mform->setType('config_email', PARAM_INTEGER);
 
         $mform->addElement('selectyesno', 'config_message', get_string('message', 'block_course_contacts'));
@@ -115,9 +115,17 @@ class block_course_contacts_edit_form extends block_edit_form {
         foreach ($roles as $key => $role) {
             $mform->addElement('selectyesno', 'config_role_'.$key, $role);
             $mform->setDefault('config_role_'.$key, 0);
-            if ($key = 3) {
+            //This is based on Role names Student and Teacher to be visible
+            if($roles[$key] === "Teacher"){
                 $mform->setDefault('config_role_'.$key, 1);
             }
+            if($roles[$key] === "Student"){
+                $mform->setDefault('config_role_'.$key, 1);
+            }
+                //This is based on Role ID
+//            if ($key = 3) {
+//                $mform->setDefault('config_role_'.$key, 1);
+//            }
             $mform->setType('config_role_'.$key, PARAM_INTEGER);
         }
     }
