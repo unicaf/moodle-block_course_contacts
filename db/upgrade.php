@@ -16,7 +16,7 @@ function xmldb_block_course_contacts_upgrade($oldversion): bool {
         $keys = array_keys($records);
         for($i = 0; $i < count($records); $i++){
                 foreach ($records[$keys[$i]] as  $record => $value) {
-
+                        //Skips empty configdata
                     if ($record === "configdata"  && (!empty($value))){
 
 
