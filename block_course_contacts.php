@@ -219,12 +219,12 @@ class block_course_contacts extends block_base {
         $clist = array();
         foreach ($roles as $key => $role) {
             //This sets views the Student
-            if($roles[$key] === "Student"){
+            if($roles[$key] === get_string('Student', 'block_course_contacts')){
                 $student_role_id_enable = 'role_'.$key;
                 $this->config->$student_role_id_enable = 1;
             }
             //This views the Teacher
-            if($roles[$key] === "Teacher"){
+            if($roles[$key] === get_string('Teacher','block_course_contacts')){
                 $teacher_role_id_enable = 'role_'.$key;
                 $this->config->$teacher_role_id_enable = 1;
             }
